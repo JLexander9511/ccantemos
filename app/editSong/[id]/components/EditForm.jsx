@@ -1,13 +1,56 @@
 "use client";
 
-import KeySelector from "@/app/addSong/components/KeySelector";
-import TagSelector from "@/app/addSong/components/TagSelector";
 import { goIdle, updateSong } from "@/store/app";
-import { Alert, Card, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextareaAutosize, Typography } from "@mui/material";
+import { Alert, Autocomplete, Card, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextareaAutosize, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+
+const keys = [
+  {name: 'Do Mayor'},
+  {name: 'Re Mayor'},
+  {name: 'Mi Mayor'},
+  {name: 'Fa Mayor'},
+  {name: 'Sol Mayor'},
+  {name: 'La Mayor'},
+  {name: 'Si Mayor'},
+  {name: 'Do Menor'},
+  {name: 'Re Menor'},
+  {name: 'Mi Menor'},
+  {name: 'Fa Menor'},
+  {name: 'Sol Menor'},
+  {name: 'La Menor'},
+  {name: 'Si Menor'},
+  {name: 'Do# Mayor'},
+  {name: 'Re# Mayor'},
+  {name: 'Mi# Mayor'},
+  {name: 'Fa# Mayor'},
+  {name: 'Sol# Mayor'},
+  {name: 'La# Mayor'},
+  {name: 'Si# Mayor'},
+  {name: 'Do# Menor'},
+  {name: 'Re# Menor'},
+  {name: 'Mi# Menor'},
+  {name: 'Fa# Menor'},
+  {name: 'Sol# Menor'},
+  {name: 'La# Menor'},
+  {name: 'Si# Menor'}
+]
+
+const etiquetas = [
+  { name: 'Ordinario'},
+  { name: 'Cuaresma'},
+  { name: 'Pascua'},
+  { name: 'Adviento'},
+  { name: 'Todo tiempo'},
+  { name: 'Alegres'},
+  { name: 'Penitencial'},
+  { name: 'Popurri'},
+  { name: 'Especial'},
+  { name: 'No apto para liturgia'},
+  { name: 'Anti liturgico'},
+]
 
 export const EditForm = ({id}) => {
 
@@ -28,8 +71,8 @@ export const EditForm = ({id}) => {
 
   const onSubmit = data => {
     data.category = category;
-    data.tags = tags.map((tag) => tag.text);
-    data.keys = key.map((key) => key.text);
+    data.tags = tags
+    data.keys = key
     data.userRelated = (displayName) ? displayName : null
     data.lyrics = getValues('lyrics');
     data.id = id;
@@ -52,8 +95,10 @@ export const EditForm = ({id}) => {
     setValue('link', songData.link)
     setValue('reference', songData.reference)
     setValue('lyrics', songData.lyrics)
+    setKey(songData.key)
+    setTags(songData.tags)
   }, [])
-  
+
   
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -102,12 +147,48 @@ export const EditForm = ({id}) => {
 
       <Card variant="outlined" sx={{marginTop:2, padding:1}}>
         <Typography sx={{color: '#797979'}}>Tags</Typography>
-        <TagSelector addTags={setTags} exTags={songData.tags}/>
+        <Autocomplete
+              multiple
+              id="tags-standard"
+              options={etiquetas}
+              onChange={(event, newValue) => {
+                let selection = [];
+                newValue.map((tag) => selection.push(tag.name))
+                setTags(selection)
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Escoja el tag(s)"
+                  placeholder="Tags"
+                />
+              )}
+            />
       </Card>
 
       <Card variant="outlined" sx={{marginTop:2, padding:1}}>
         <Typography sx={{color: '#797979'}}>Tono(s) - 1. Masculino, 2.Femenino</Typography>
-        <KeySelector addKeys={setKey} exKeys={songData.key}/>
+        <Autocomplete
+              multiple
+              id="tags-standard"
+              options={keys}
+              onChange={(event, newValue) => {
+                let selection = [];
+                newValue.map((key) => selection.push(key.name))
+                setKey(selection)
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Escoja el tono"
+                  placeholder="Tonos"
+                />
+              )}
+            />
       </Card>
 
       <FormControl sx={{marginTop: 2}}>
@@ -141,7 +222,7 @@ export const EditForm = ({id}) => {
         
       </Grid>
 
-      {(status == 'error') && <Alert severity="error" className="mt-2">Ha ocurrido un error.</Alert>}
+      {(status == 'error') && <Alert severity="error" className="mt-2">{message}</Alert>}
       {(status == 'success') && <Alert severity="success" className="mt-2">{message}</Alert>}
       <input disabled={isProcessing} type="submit" className="bg-orange-400 p-2 mb-2 ms-2 rounded disabled:bg-slate-500" value='Actualizar'/>
 
