@@ -1,13 +1,56 @@
 "use client";
 
-import { Card, FormControl, InputLabel, Typography, Input, Stack, Select, MenuItem, TextareaAutosize, Alert } from "@mui/material"
+import { Card, FormControl, InputLabel, Typography, Input, Stack, Select, MenuItem, TextareaAutosize, Alert, Autocomplete, TextField } from "@mui/material"
 import Grid from '@mui/material/Unstable_Grid2';
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from 'react-hook-form';
-import KeySelector from "./KeySelector";
-import TagSelector from "./TagSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { goIdle, registerSong } from "@/store/app";
+
+const keys = [
+  {name: 'Do Mayor'},
+  {name: 'Re Mayor'},
+  {name: 'Mi Mayor'},
+  {name: 'Fa Mayor'},
+  {name: 'Sol Mayor'},
+  {name: 'La Mayor'},
+  {name: 'Si Mayor'},
+  {name: 'Do Menor'},
+  {name: 'Re Menor'},
+  {name: 'Mi Menor'},
+  {name: 'Fa Menor'},
+  {name: 'Sol Menor'},
+  {name: 'La Menor'},
+  {name: 'Si Menor'},
+  {name: 'Do# Mayor'},
+  {name: 'Re# Mayor'},
+  {name: 'Mi# Mayor'},
+  {name: 'Fa# Mayor'},
+  {name: 'Sol# Mayor'},
+  {name: 'La# Mayor'},
+  {name: 'Si# Mayor'},
+  {name: 'Do# Menor'},
+  {name: 'Re# Menor'},
+  {name: 'Mi# Menor'},
+  {name: 'Fa# Menor'},
+  {name: 'Sol# Menor'},
+  {name: 'La# Menor'},
+  {name: 'Si# Menor'}
+]
+
+const etiquetas = [
+  { name: 'Ordinario'},
+  { name: 'Cuaresma'},
+  { name: 'Pascua'},
+  { name: 'Adviento'},
+  { name: 'Todo tiempo'},
+  { name: 'Alegres'},
+  { name: 'Penitencial'},
+  { name: 'Popurri'},
+  { name: 'Especial'},
+  { name: 'No apto para liturgia'},
+  { name: 'Anti liturgico'},
+]
 
 function SongForm() {
 
@@ -24,8 +67,8 @@ function SongForm() {
 
   const onSubmit = data => {
     data.category = category;
-    data.tags = tags.map((tag) => tag.text);
-    data.keys = key.map((key) => key.text);
+    data.tags = tags
+    data.keys = key
     data.userRelated = (displayName) ? displayName : null
     data.lyrics = getValues('lyrics');
 
@@ -42,6 +85,11 @@ function SongForm() {
   }
 
   const handleChange = (event) => setCategory(event.target.value);
+
+  useEffect(() => {
+ console.log(key)
+  }, [key])
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -90,12 +138,48 @@ function SongForm() {
 
           <Card variant="outlined" sx={{marginTop:2, padding:1}}>
             <Typography sx={{color: '#797979'}}>Tags</Typography>
-            <TagSelector addTags={setTags}/>
+            <Autocomplete
+              multiple
+              id="tags-standard"
+              options={etiquetas}
+              onChange={(event, newValue) => {
+                let selection = [];
+                newValue.map((tag) => selection.push(tag.name))
+                setTags(selection)
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Escoja el tag(s)"
+                  placeholder="Tags"
+                />
+              )}
+            />
           </Card>
 
           <Card variant="outlined" sx={{marginTop:2, padding:1}}>
             <Typography sx={{color: '#797979'}}>Tono(s) - 1. Masculino, 2.Femenino</Typography>
-            <KeySelector addKeys={setKey}/>
+            <Autocomplete
+              multiple
+              id="tags-standard"
+              options={keys}
+              onChange={(event, newValue) => {
+                let selection = [];
+                newValue.map((key) => selection.push(key.name))
+                setKey(selection)
+              }}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Escoja el tono"
+                  placeholder="Tonos"
+                />
+              )}
+            />
           </Card>
 
           <FormControl sx={{marginTop: 2}}>
@@ -130,7 +214,7 @@ function SongForm() {
         </Grid>
       
 
-        {(status == 'error') && <Alert severity="error" className="mt-2">Ha ocurrido un error.</Alert>}
+        {(status == 'error') && <Alert severity="error" className="mt-2">{message}</Alert>}
         {(status == 'success') && <Alert severity="success" className="mt-2">{message}</Alert>}
         <input disabled={isProcessing} type="submit" className="bg-orange-400 p-2 mb-2 ms-2 rounded disabled:bg-slate-500" value='Registrar'/>
         <button disabled={isProcessing} className="bg-orange-400 p-2 mb-2 ms-2 rounded disabled:bg-slate-500" onClick={() => reset() }>Resetear</button>
@@ -139,3 +223,5 @@ function SongForm() {
 }
 
 export default SongForm
+
+//<TagSelector addTags={setTags}/>
