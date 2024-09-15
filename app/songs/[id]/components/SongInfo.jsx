@@ -58,9 +58,9 @@ export const SongInfo = ({songData, role}) => {
         <Divider sx={{marginY: 2}}/>
         
         <Stack marginY={1} direction='row'>
-          {songData.tags.map((tag) => 
+          {songData.tags.map((tag, index) => 
           
-              <Chip sx={{marginRight: '5px'}} label={tag} />
+              <Chip sx={{marginRight: '5px'}} label={tag} key={index}/>
 
           )}
 
@@ -68,7 +68,7 @@ export const SongInfo = ({songData, role}) => {
         <Stack marginY={1} direction='row'>
         {songData.key.map((key, index) => 
           
-            <Chip sx={{marginRight: '5px', backgroundColor: (index == 0 ? '#233FBC' : '#F5A9BB'), color: (index == 0 ? 'white' : 'black')}} label={key} />
+            <Chip sx={{marginRight: '5px', backgroundColor: (index == 0 ? '#233FBC' : '#F5A9BB'), color: (index == 0 ? 'white' : 'black')}} label={key} key={index}/>
 
         )}
         </Stack>
