@@ -65,7 +65,7 @@ export const EditForm = ({id}) => {
 
   const router = useRouter();
 
-  const isProcessing = useMemo( () => status != 'idle', [status])
+  const isProcessing = useMemo( () => status == 'processing', [status])
 
   const handleChange = (event) => setCategory(event.target.value);
 

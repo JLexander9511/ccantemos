@@ -63,7 +63,7 @@ function SongForm() {
   const [tags, setTags] = useState([]);
   const [key, setKey] = useState([]);
 
-  const isProcessing = useMemo( () => status != 'idle', [status])
+  const isProcessing = useMemo( () => status == 'processing', [status])
 
   const onSubmit = data => {
     data.category = category;
@@ -85,11 +85,6 @@ function SongForm() {
   }
 
   const handleChange = (event) => setCategory(event.target.value);
-
-  useEffect(() => {
- console.log(key)
-  }, [key])
-  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

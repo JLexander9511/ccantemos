@@ -50,7 +50,7 @@ export const CatSongList = ({category}) => {
                     <ListItemIcon>
                         <CategoryIcon htmlColor="rgb(51 65 85)"/>
                     </ListItemIcon>
-                    <ListItemText primary={<p className="text-xl font-bold" style={{color: 'rgb(51 65 85)'}}>{capitalize(cat.name)}</p>} />
+                    <ListItemText sx={{width:'250px', textOverflow:'ellipsis', overflow:'hidden', whiteSpace:'nowrap'}} primary={<p className="text-xl font-bold" style={{color: 'rgb(51 65 85)'}}>{capitalize(cat.name)}</p>} />
                     </ListItemButton>
                 </ListItem>
               </Link>
