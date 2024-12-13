@@ -111,10 +111,10 @@ export const MassConstructor = () => {
         {isProcessing && <SongSelector setter={setSongList} options={titleDB} type='santo' /> || <CircularProgress/>}
       </Box>
 
-      <Box sx={{marginY:2}}>
+      {/* <Box sx={{marginY:2}}>
         <Typography variant="h5" fontWeight='bold'>Padre Nuestro</Typography>
         {isProcessing && <SongSelector setter={setSongList} options={titleDB} type='padreNuestro'/> || <CircularProgress/>}
-      </Box>
+      </Box> */}
 
       <Box>
         <Typography variant="h5" fontWeight='bold'>Paz</Typography>

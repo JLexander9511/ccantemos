@@ -20,7 +20,6 @@ const titleOrder = {
   'interleccional': 'gospel',
   'ofertorio': 'offertory',
   'santo': 'saint',
-  'padreNuestro': 'ourFather',
   'paz': 'peace',
   'cordero': 'lamb',
   'comunion': 'communion',

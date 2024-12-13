@@ -27,9 +27,10 @@ export const SongSelector = ({setter, options, type, induction}) => {
     const isProcessing = useMemo( () => titles.length > 0 , [titles])
 
     let category = induction && 'interleccional' || type
-
 useEffect(() => {
-    setTitles(options.filter((option) => option.category.includes(category)))
+    setTitles(options.filter((option) => 
+      option.category.includes(category) || option.category.includes('aguinaldo')
+    ))
 }, [])
 
 useEffect(() => {
